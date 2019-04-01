@@ -1,51 +1,80 @@
 import java.io.*;
 import java.util.*;
 
-public class Solution {
+public class Solution
+{
+    /*
+     * создать обьект и выполнять его в отдельном потоке
+     * лябмда выражение
+     */
+    public static void main(String[] args) {
 
-	/*
-	* Реализовать функцию вычисляющую высоту дерева. Дерево растет в два цикла каждый год. Каждую весну его высота удваевается,
-	* каждое лето дерево прибавляет один метр. Дерево высаживается высотой 1 метр. 
-	* Вычислить высоту дерева через n - циклов роста.
-	*
-	* Дано: t - количество тестовых примеров
-	*	n - количество циклов роста
-	*  	1 <= t <= 10
-	* 	0 <= t <= 60
-	* Пример:
-	*       2
-	*	0
-	*	4
-	*
-	* Решение:
-	*	1
-	*	7
-	*/
-	
-    static int func(int n) {
-   
+        Thread thread1 = new Thread (
+                () -> new RunnerL().run()
+        );
+        thread1.start();
     }
 
-    private static final Scanner scanner = new Scanner(System.in);
+}
 
-    public static void main(String[] args) throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+class RunnerL implements Runnable
+{
 
-        int t = scanner.nextInt();
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+    @Override
+    public void run()
+    {
+        new ObjectCulc().Object();
+    }
+}
 
-        for (int tItr = 0; tItr < t; tItr++) {
-            int n = scanner.nextInt();
-            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+class ObjectCulc
+{
+    /*
+     * Реализовать функцию вычисляющую высоту дерева. Дерево растет в два цикла каждый год. Каждую весну его высота удваевается,
+     * каждое лето дерево прибавляет один метр. Дерево высаживается высотой 1 метр.
+     * Вычислить высоту дерева через n - циклов роста.
+     *
+     * Дано: t - количество тестовых примеров
+     *	n - количество циклов роста
+     *  	1 <= t <= 10
+     * 	0 <= t <= 60
+     * Пример:
+     *       2
+     *	0
+     *	4
+     *
+     * Решение:
+     *	1
+     *	7
+     */
 
-            int result = func(n);
-
-            bufferedWriter.write(String.valueOf(result));
-            bufferedWriter.newLine();
+    static void func1(int n, int cycles[])
+    {
+        int c;
+        for(int k = 0; k < n; k++)
+        {
+            c = cycles[k];
+            int lenWood = 1; // высота дерева
+            for (int i = 0; i < c; i++)
+            {
+                lenWood = i % 2 == 0 ? lenWood * 2 : lenWood + 1;
+            }
+            System.out.println(lenWood);
         }
+    }
 
-        bufferedWriter.close();
+    public void Object()
+    {
 
-        scanner.close();
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+
+        int[] cycles = new int[n]; //создаем массив тестовых примеров
+
+        for (int i = 0; i < n; i++) //считываем в массив
+        {
+            cycles[i] = scanner.nextInt();
+        }
+        func1(n, cycles);
     }
 }
